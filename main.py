@@ -4,8 +4,10 @@ import tkinter as tk
 import numpy as np
 from ast import literal_eval
 from tkinter import filedialog
+from datetime import datetime as dt
 
 
+# Get data from file
 cstimerfile = filedialog.askopenfilename(title="Please choose a .txt file to open:")  # opens file
 
 re_sessions = re.compile(r'session\d+":(\[]|.+?]])')
@@ -21,16 +23,18 @@ with open(cstimerfile) as f:
     sessions = np.array([session for _, session in sorted(zip(ranks, sessions))])  # array of ranked sessions
 
 
-
+# Select the session
 master = tk.Tk()
 master.title("Please choose a session:")
 m = tk.StringVar()
 master.geometry("300x100")
 
 
-def get_input():  # select session
+def get_input():  # Get session choice
     global session
-    session = sessions[np.where(sessions==m.get())[0]][0]  # find corresponding session of name
+    session = sessions[np.where(sessions==m.get())[0]]  # find corresponding session of name
+    session = session.reshape(2)
+    session = session[0]
     master.destroy()
 
 
