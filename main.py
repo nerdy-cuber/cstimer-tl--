@@ -43,3 +43,13 @@ menu.pack()
 submit_button = tk.Button(master, text="Submit", command=get_input)
 submit_button.pack()
 tk.mainloop()
+
+
+# plotting thing
+session = literal_eval(session)
+times = [sum(solve[0])/1000 for solve in session]  # extracts times
+timestamps = [dt.fromtimestamp(solve[3]) for solve in session]  # extracts timestamps
+
+
+plt.scatter(timestamps, times)
+plt.show()
