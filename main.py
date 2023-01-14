@@ -28,25 +28,26 @@ master = tk.Tk()
 master.title("Please choose a session:")
 m = tk.StringVar()
 master.geometry("300x100")
+menu_default = "Choose one"
+
+def main():  # Get name choice
+    while True:
+        session = sessions[names.index(m.get())]  # Finds corresponding session with name
+        submit_button.config(state="disabled")
+        plot(session)
+        submit_button.config(state="normal")
+        m.set(menu_default)  # resets after plot is closed
 
 
-def get_input():  # Get name choice
-    global session
-    session = sessions[names.index(m.get())]  # Finds corresponding session with name
-    master.destroy()
+def plot(session):
+    times = [sum(solve[0])/1000 for solve in session]  # extracts times
+    timestamps = [dt.fromtimestamp(solve[3]) for solve in session]  # extracts timestamps
+    plt.scatter(timestamps, times)
+    plt.show()
 
 
-menu = tk.OptionMenu(master, m, *names)
+menu = tk.OptionMenu(master, m, menu_default, *names)
 menu.pack()
-submit_button = tk.Button(master, text="Submit", command=get_input)
+submit_button = tk.Button(master, text="Submit", command=main)
 submit_button.pack()
 tk.mainloop()
-
-
-# plotting thing
-times = [sum(solve[0])/1000 for solve in session]  # extracts times
-timestamps = [dt.fromtimestamp(solve[3]) for solve in session]  # extracts timestamps
-
-
-plt.scatter(timestamps, times)
-plt.show()
